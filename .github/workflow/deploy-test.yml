@@ -1,0 +1,31 @@
+name: Deploy test to check server status
+on:
+  pull_request:
+    branches:
+      - alejandroz
+    types: [opened, reopened, synchronized]
+  push:
+    branches:
+    - develop
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: setup-go
+        uses: actions/checout@v4
+      - name: Build project
+        run: go builds -o main
+      - name: Run gin server
+        run: nohup ./main &
+      - name: check server status
+        run:
+          RESPONSE=$(curl http.//localhost:8000/status)
+          if echo "$RESPONSE" | grep -q '"status":"OK"'; then
+            echo "Server is running, status OK"
+          else
+            echo "Server no corre"
+            echo "chamba fallada"
+            exit 1 
+          fi
