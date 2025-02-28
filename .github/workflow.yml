@@ -5,6 +5,12 @@ on:
     branches:
       alejandroz
 
-      jobs:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      -name: saludar
+      run: echo "hola"
+      -name: despedir
+      run: echo "adios"
 
-      
